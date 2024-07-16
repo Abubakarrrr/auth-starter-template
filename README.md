@@ -4,7 +4,7 @@ Welcome to the Full-Stack MERN Authentication project! This project demonstrates
 
 ## 🎨 Screenshots
 
-    ![Dashboard](https://github.com/Abubakarrrr/auth-starter-template/blob/main/1.png)
+![image](https://github.com/Abubakarrrr/auth-starter-template/blob/main/1.png)
 
 ## 🚀 Features
 
