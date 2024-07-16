@@ -6,22 +6,23 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound"
 import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
 
-  return <div className="">
+  return <BrowserRouter>
+    {/* header */}
     <Header />
- 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-
-  </div>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/about' element={<About />} />
+      <Route path='/sign-in' element={<SignIn />} />
+      <Route path='/sign-up' element={<SignUp />} />
+      <Route element={<PrivateRoute />}>
+        <Route path='/profile' element={<Profile />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 
 }
 
