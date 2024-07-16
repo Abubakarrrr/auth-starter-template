@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
 
-  const naviagte = useNavigate()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -13,26 +13,30 @@ const SignUp = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    setLoading(true)
-    setError(false)
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-    const data = await res.json();
-    setLoading(false)
-    // console.log(data)
-    if (data.success === false) {
-      setError(true)
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError(false);
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      // console.log(data);
+      setLoading(false);
+      if (data.success === false) {
+        setError(true);
+        return;
+      }
+      navigate('/sign-in');
+    } catch (error) {
+      setLoading(false);
+      setError(true);
     }
-    naviagte("/sign-in")
-
-  }
+  };
 
   return (
     <>
@@ -78,7 +82,7 @@ const SignUp = () => {
         </div>
 
         <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
-        
+
       </div>
     </>
   )

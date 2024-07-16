@@ -1,38 +1,41 @@
 import React, { useState } from 'react'
-import { Link,useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const SignIn = () => {
 
-  const navigate=useNavigate()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { loading, error } = useSelector((state) => state.user)
   const [formData, setFormData] = useState({})
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    setLoading(true)
-    setError(false)
-    const res = await fetch('/api/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })  
-    const data = await res.json();
-    setLoading(false)
-    // console.log(data)
-    if (data.success === false) {
-      setError(true)
+    e.preventDefault();
+    try {
+      dispatch(signInStart());
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data));
+        return;
+      }
+      dispatch(signInSuccess(data));
+      navigate('/');
+    } catch (error) {
+      dispatch(signInFailure(error));
     }
-    navigate('/')
-
-  }
+  };
 
   return (
     <>
@@ -41,7 +44,7 @@ const SignIn = () => {
         <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
 
         <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-          
+
           <input
             type='email'
             placeholder='Email'
@@ -71,8 +74,8 @@ const SignIn = () => {
           </Link>
         </div>
 
-        <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
-        
+        <p className='text-red-700 mt-5'>{error ? error.message || 'Something went wrong!' : ''}</p>
+
       </div>
     </>
   )
