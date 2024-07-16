@@ -4,7 +4,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import {
-  updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOut,
+  updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOut
 } from '../redux/user/userSlice';
 export default function Profile() {
 
@@ -46,13 +46,11 @@ export default function Profile() {
       }
     );
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  useEffect(() => {
-    console.log('updateSuccess:', updateSuccess);
-  }, [updateSuccess]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,6 +100,7 @@ export default function Profile() {
       console.log(error);
     }
   };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -171,9 +170,9 @@ export default function Profile() {
           className='text-red-700 cursor-pointer'>
           Delete Account
         </span>
-        {/* <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
           Sign out
-        </span> */}
+        </span>
       </div>
 
       <p className='text-green-700 mt-5'>
